@@ -19,11 +19,15 @@
         init();
 
         function getEmployees() {
+            vm.isLoading = true;
+
             employeeFactory.getEmployees().then(function (res) {
                 vm.employees = res.data;
+                vm.isLoading = false;
             })
                 .catch(function (err) {
                     toastr.error(err);
+                    vm.isLoading = false;
                 });
         }
 

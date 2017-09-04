@@ -41,6 +41,8 @@
     </div>
   </div>
   <div class="col-md-8">
+    <div ng-if="vm.isLoading">Loading please wait... <i class="fa fa-fw fa-2x fa-spin fa-spinner"></i></div>
+    <div ng-if="vm.employees.length == 0"><h4>No Employees Found. Please add an employee using form on the left.</h4></div>
     <div class="table-responsive">
       <table ng-if="vm.employees.length > 0" class="table table-bordered table-hover table-striped">
         <caption><h4>Employee List</h4></caption>
