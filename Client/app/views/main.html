@@ -1,0 +1,68 @@
+<div class="row" ng-controller="MainCtrl as vm">
+  <div class="col-md-4">
+    <div class="well bs-component">
+      <h4>Add Employee</h4>
+      <form class="form-horizontal" ng-submit="vm.saveEmployee()">
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+              <input type="text" class="form-control" placeholder="First Name" ng-model="vm.employee.FirstName" required>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Last Name</label>
+              <input type="text" class="form-control" placeholder="Last Name" ng-model="vm.employee.LastName" required>
+          </div>
+          <div class="form-group">
+            <label class="control-label">Salary</label>
+              <input type="number" min="10000" max="200000" class="form-control" placeholder="52,000" ng-model="vm.employee.Salary" required>
+          </div>
+        <div class="form-group">
+          <h4 class="left">Add Dependents</h4>
+          <a href="javascript:void(0)"><i class="fa fa-2x fa-plus-circle right" ng-click="vm.addDependent()"></i></a>
+        </div>
+        <ul>
+          <li ng-repeat="d in vm.employee.dependents track by $index">{{d.FirstName}} -- {{d.Relationship}}</li>
+        </ul>
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+              <input type="text" class="form-control" placeholder="First Name" ng-model="vm.dependent.FirstName">
+          </div>
+          <div class="form-group">
+            <label for="select" class="control-label">Relationship</label>
+            <select class="form-control" ng-model="vm.dependent.Relationship_Id"
+                    ng-options="item.Id as item.Description for item in vm.relationships">
+              <option value="">{{vm.relMessage}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6"><button type="button" class="btn btn-default btn-block" ng-click="vm.clearForm()">Clear</button></div>
+            <div class="col-md-6"><button type="submit" class="btn btn-save btn-block">Save</button></div>
+          </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="table-responsive">
+      <table ng-if="vm.employees.length > 0" class="table table-bordered table-hover table-striped">
+        <caption><h4>Employee List</h4></caption>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Salary</th>
+            <th># Dependents</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="e in vm.employees track by $index">
+            <td>{{e.FirstName}}</td>
+            <td>{{e.LastName}}</td>
+            <td>{{e.Salary | currency:"$"}}</td>
+            <td>{{e.DependentCount}}</td>
+            <td><a href="javascript:void(0)" ng-click="vm.showPaycheck(e.Id)">View Paycheck</a></td>
+          </tr>
+        </tbody>
+      </table>
+     </div>
+  </div>
+</div>

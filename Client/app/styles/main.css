@@ -1,0 +1,190 @@
+body {
+  padding-top: 80px
+}
+
+  body > .navbar {
+    -webkit-transition: background-color .3s ease-in;
+    transition: background-color .3s ease-in
+  }
+
+@media (min-width:768px) {
+  body > .navbar-transparent {
+    background-color: transparent
+  }
+
+    body > .navbar-transparent .navbar-nav > .open > a {
+      background-color: transparent !important
+    }
+}
+
+#home {
+  padding-top: 0
+}
+
+  #home .navbar-brand {
+    padding: 13.5px 15px 12.5px
+  }
+
+    #home .navbar-brand > img {
+      display: inline;
+      margin: 0 10px;
+      height: 100%
+    }
+
+#banner {
+  min-height: 300px;
+  border-bottom: none
+}
+
+.table-of-contents {
+  margin-top: 1em
+}
+
+.page-header h1 {
+  font-size: 4em
+}
+
+.bs-docs-section {
+  margin-top: 6em
+}
+
+  .bs-docs-section h1 {
+    padding-top: 100px
+  }
+
+.bs-component {
+  position: relative
+}
+
+  .bs-component .modal {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    z-index: 1;
+    display: block
+  }
+
+  .bs-component .modal-dialog {
+    width: 90%
+  }
+
+  .bs-component .popover {
+    position: relative;
+    display: inline-block;
+    width: 220px;
+    margin: 20px
+  }
+
+#source-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  font-weight: 700
+}
+
+.nav-tabs {
+  margin-bottom: 15px
+}
+
+.progress {
+  margin-bottom: 10px
+}
+
+footer {
+  margin: 5em 0
+}
+
+  footer li {
+    float: left;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em
+  }
+
+  footer p {
+    clear: left;
+    margin-bottom: 0
+  }
+
+  .btn-save {
+    background-color: #f18815;
+    border-color: #f18815;
+    color: #fff;
+    text-transform:uppercase;
+    letter-spacing: 4px;
+  }
+
+    .btn-save:hover,
+    .btn-save:focus,
+    .btn-save:active,
+    .btn-save.active {
+      background-color: #df7b0d;
+      border-color: #c76e0c;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    .btn-save.disabled:hover,
+    .btn-save.disabled:focus,
+    .btn-save.disabled:active,
+    .btn-save.disabled.active,
+    .btn-save[disabled]:hover,
+    .btn-save[disabled]:focus,
+    .btn-save[disabled]:active,
+    .btn-save[disabled].active,
+    fieldset[disabled] .btn-save:hover,
+    fieldset[disabled] .btn-save:focus,
+    fieldset[disabled] .btn-save:active,
+    fieldset[disabled] .btn-save.active {
+      background-color: #f18815;
+      border-color: #f18815;
+    }
+
+.btn-default {
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.well{
+  padding:0 19px;
+}
+.well h4 {
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-left: -15px;
+  color: #0089bd;
+}
+
+caption h4 {
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0089bd;
+}
+
+.left {
+  display: block;
+  float: left;
+  width: 80%;
+  padding-left:19px;
+}
+
+.right {
+  display: block;
+  float: right;
+  text-align:right;
+  width: 20%;
+  padding-right:10px;
+}
+.dep-header {
+  position: absolute;
+  bottom: 0;
+  margin: 0 5px 5px 5px;
+}
+.btn-block {
+  margin: 5px 0;
+}

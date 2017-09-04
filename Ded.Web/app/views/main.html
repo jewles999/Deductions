@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="well bs-component">
+      <h4>Add Employee</h4>
+      <form class="form-horizontal" ng-submit="saveEmployee()">
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+              <input type="text" class="form-control" placeholder="First Name" ng-model="employee.FirstName">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Last Name</label>
+              <input type="text" class="form-control" placeholder="Last Name" ng-model="employee.LastName">
+          </div>
+          <div class="form-group">
+            <label class="control-label">Salary</label>
+              <input type="number" class="form-control" placeholder="52,000" ng-model="employee.Salary">
+          </div>
+          <hr />
+          <h4>Add Dependents</h4>
+          <ul>
+            <li ng-repeat="d in employee.dependents">{{d.FirstName}} -- {{d.Relationship}}</li>
+          </ul>
+          <div class="form-group">
+            <label class="control-label">First Name</label>
+              <input type="text" class="form-control" placeholder="First Name" ng-model="dependent.FirstName">
+          </div>
+          <div class="form-group">
+            <label for="select" class="control-label">Relationship</label>
+              <select class="form-control" id="select" ng-model="dependent.Relationship">
+                <option>Child</option>
+                <option>Spouse</option>
+                <option>Other</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <div class="col-md-6"><button type="button" class="btn btn-default btn-block" ng-click="clearForm()">Clear</button></div>
+            <div class="col-md-6"><button type="submit" class="btn btn-save btn-block">Save</button></div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
