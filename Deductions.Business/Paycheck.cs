@@ -8,9 +8,9 @@ namespace Deductions.Business
 {
     public class Paycheck : ILetterADiscount
     {
-        public decimal CalculateDiscountedDeduction(decimal Deduction, decimal Discount)
+        public decimal CalculateDiscountedDeduction(decimal deduction, decimal discount)
         {
-            return Deduction * Discount;
+            return deduction * discount;
         }
 
         /// <summary>
@@ -20,18 +20,24 @@ namespace Deductions.Business
         /// <param name="LastName"></param>
         /// <param name="Discount"></param>
         /// <returns>Discount or 0</returns>
-        public decimal CalculateLetterADiscount(string FirstName, string LastName, decimal Discount)
+        public decimal CalculateLetterADiscount(string firstName, string lastName, decimal discount)
         {
-            if (String.IsNullOrEmpty(FirstName) || String.IsNullOrEmpty(LastName))
+            if (String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName))
                 throw new ArgumentException("Error Calculating Discount! First and Last names should be provided!");
 
-            return FirstName.Substring(0, 1).ToUpper().Equals("A")
-                || LastName.Substring(0, 1).ToUpper().Equals("A") ? Discount : 0;
+            return firstName.Substring(0, 1).ToUpper().Equals("A")
+                || lastName.Substring(0, 1).ToUpper().Equals("A") ? discount : 0;
         }
 
-        public decimal CalculateSubTotal(decimal Amount, decimal Discount)
+        public decimal CalculateSubTotal(decimal amount, decimal discount)
         {
-            return Amount >= Discount && Discount >= 0 ? Amount - Discount : Amount;
+            if (discount < 0)
+                throw new ArgumentException("Discount value cannot be negative!");
+
+            if (amount <= 0)
+                throw new ArgumentException("Amount must be greater than zero!");
+
+            return amount - discount;
         }
     }
 }
