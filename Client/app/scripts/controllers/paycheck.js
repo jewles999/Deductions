@@ -1,12 +1,16 @@
 'use strict';
 (function () {
     var PaycheckCtrl = function ($scope, employeeFactory, $uibModalInstance, A) {
-        var vm = this;
+
+        $scope.isLoading = true;
+
         employeeFactory.getPaycheck(A.Id).then(function (res) {
             $scope.paycheckView = res.data;
+            $scope.isLoading = false;
         })
             .catch(function (err) {
-                toastr.error(err);
+                toastr.error("Could not connect to the database.");
+                $scope.isLoading = false;
             })
 
         $scope.cancel = function () {

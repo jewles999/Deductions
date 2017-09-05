@@ -8,8 +8,9 @@ namespace Deductions.Business
 {
     public interface ILetterADiscount
     {
-        decimal CalculateLetterADiscount(string FirstName, string LastName, decimal Discount);
-        decimal CalculateDiscountedDeduction(decimal Deduction, decimal Discount);
-        decimal CalculateSubTotal(decimal Amount, decimal Discount);
+        decimal CalculateLetterADiscount(string firstName, string lastName, decimal discount);
+        decimal CalculateDiscountedDeduction(decimal deduction, decimal discount);
+        decimal CalculateSubTotal(decimal amount, decimal discount);
+        decimal CalculatePayPeriodValue(decimal subtotal, int numberOfPayPeriods);
     }
 }

@@ -26,7 +26,7 @@
                 vm.isLoading = false;
             })
                 .catch(function (err) {
-                    toastr.error(err);
+                    toastr.error("Could not connect to the database.");
                     vm.isLoading = false;
                 });
         }
@@ -41,7 +41,7 @@
                 vm.relMessage = finishedRelMessage();
             })
                 .catch(function (err) {
-                    toastr.error(err);
+                    toastr.error("Could not connect to the database.");
                     vm.relMessage = finishedRelMessage();
                 });
         }
@@ -71,7 +71,7 @@
 
                 })
                     .catch(function (err) {
-                        toastr.error(err);
+                        toastr.error("Could not save the data.");
                     });
 
                 initEmployee();

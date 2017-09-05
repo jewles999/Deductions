@@ -10,7 +10,7 @@ namespace DeductionsAPI.Models
         public DbSet<Deduction> Deductions { get; set; }
 
         public ApplicationDbContext()
-            : base("DefaultConnection")
+            : base("makerDb")
         {
         }
 

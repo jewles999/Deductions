@@ -9,6 +9,9 @@ using Deductions.Business;
 
 namespace DeductionsAPI.Data
 {
+    /// <summary>
+    /// Creates a detail paycheck view per employeeId
+    /// </summary>
     public class PaycheckRepo : IPaycheckRepo
     {
         private readonly ApplicationDbContext _dbContext;
@@ -86,9 +89,10 @@ namespace DeductionsAPI.Data
                 PersonType = EmployeeType,
                 FirstName = emp.FirstName,
                 LastName = emp.LastName,
-                Deduction = DeductionContstants.EmployeeDeduction / DeductionContstants.NumberOfPayPeriods,
-                Discount = discountAmount / DeductionContstants.NumberOfPayPeriods,
-                SubTotal = _paycheck.CalculateSubTotal(DeductionContstants.EmployeeDeduction, discountAmount) / DeductionContstants.NumberOfPayPeriods
+                Deduction = _paycheck.CalculatePayPeriodValue(DeductionContstants.EmployeeDeduction, DeductionContstants.NumberOfPayPeriods),
+                Discount =  _paycheck.CalculatePayPeriodValue(discountAmount, DeductionContstants.NumberOfPayPeriods),
+                SubTotal = _paycheck.CalculatePayPeriodValue(_paycheck.CalculateSubTotal(DeductionContstants.EmployeeDeduction, discountAmount),
+                                                                    DeductionContstants.NumberOfPayPeriods)
             };
             return person;
         }
@@ -102,9 +106,10 @@ namespace DeductionsAPI.Data
                 PersonType = DependentType,
                 FirstName = dep.DependentFirstName,
                 LastName = dep.LastName,
-                Deduction = DeductionContstants.DependentDeduction / DeductionContstants.NumberOfPayPeriods,
-                Discount = discountAmount / DeductionContstants.NumberOfPayPeriods,
-                SubTotal = _paycheck.CalculateSubTotal(DeductionContstants.DependentDeduction, discountAmount) / DeductionContstants.NumberOfPayPeriods
+                Deduction = _paycheck.CalculatePayPeriodValue(DeductionContstants.DependentDeduction, DeductionContstants.NumberOfPayPeriods),
+                Discount = _paycheck.CalculatePayPeriodValue(discountAmount, DeductionContstants.NumberOfPayPeriods),
+                SubTotal = _paycheck.CalculatePayPeriodValue(_paycheck.CalculateSubTotal(DeductionContstants.DependentDeduction, discountAmount), 
+                                                                DeductionContstants.NumberOfPayPeriods)
             };
             return person;
         }

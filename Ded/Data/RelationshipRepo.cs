@@ -5,6 +5,9 @@ using DeductionsAPI.Models;
 
 namespace DeductionsAPI.Data
 {
+    /// <summary>
+    /// List of Relationships
+    /// </summary>
     public class RelationshipRepo : IRelationshipRepo
     {
         private readonly ApplicationDbContext _dbContext;

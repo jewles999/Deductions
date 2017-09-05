@@ -19,8 +19,8 @@
           <h4 class="left">Add Dependents</h4>
           <a href="javascript:void(0)"><i class="fa fa-2x fa-plus-circle right" ng-click="vm.addDependent()"></i></a>
         </div>
-        <ul>
-          <li ng-repeat="d in vm.employee.dependents track by $index">{{d.FirstName}} -- {{d.Relationship}}</li>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="d in vm.employee.dependents track by $index"><i class="fa fa-fw fa-user"></i> {{d.FirstName}}</li>
         </ul>
           <div class="form-group">
             <label class="control-label">First Name</label>
@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class="col-md-8">
-    <div ng-if="vm.isLoading">Loading please wait... <i class="fa fa-fw fa-2x fa-spin fa-spinner"></i></div>
+    <div ng-if="vm.isLoading">Loading Employees, please wait... <i class="fa fa-fw fa-2x fa-spin fa-circle-o-notch"></i></div>
     <div ng-if="vm.employees.length == 0"><h4>No Employees Found. Please add an employee using form on the left.</h4></div>
     <div class="table-responsive">
       <table ng-if="vm.employees.length > 0" class="table table-bordered table-hover table-striped">

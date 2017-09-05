@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using DeductionsAPI.Models;
 using DeductionsAPI.Models.ViewModels;
-using DeductionsAPI.Models.ViewModels;
 
 namespace DeductionsAPI.Data
 {
+    /// <summary>
+    /// Employee data functionality:
+    /// AddEmployee 
+    /// GetEmployees
+    /// </summary>
     public class EmployeeRepo : IEnumerable
     {
         private readonly ApplicationDbContext _dbContext;
