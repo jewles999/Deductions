@@ -26,7 +26,7 @@ namespace DeductionsAPI.Controllers
         /// JSON of Relationships
         /// [{"Id":1,"Description":"Spouse"},{},...]
         /// </returns>
-        public async Task<IHttpActionResult> Get()
+        public async Task<IHttpActionResult> GetAsync()
         {
             var rels = await Task.Run(() => _repo.Relationships);
 

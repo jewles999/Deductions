@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DeductionsAPI.Models.ViewModels;
+﻿using DeductionsAPI.Models.ViewModels;
 
 namespace DeductionsAPI.Repo
 {

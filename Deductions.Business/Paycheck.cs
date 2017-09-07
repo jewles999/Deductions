@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ded.Settings;
 
 namespace Deductions.Business
 {
@@ -25,31 +22,31 @@ namespace Deductions.Business
         /// <summary>
         /// If FirstName or LastName starts with A, return discount
         /// </summary>
-        /// <param name="FirstName"></param>
-        /// <param name="LastName"></param>
-        /// <param name="Discount"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="discount"></param>
         /// <returns>Discount or 0</returns>
         public decimal CalculateLetterADiscount(string firstName, string lastName, decimal discount)
         {
             if (String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName))
-                throw new ArgumentException("Error Calculating Discount! First and Last names should be provided!");
+                throw new ArgumentException(message: "Error Calculating Discount! First and Last names should be provided!");
 
-            return firstName.Substring(0, 1).ToUpper().Equals("A")
-                || lastName.Substring(0, 1).ToUpper().Equals("A") ? discount : 0;
+            return firstName.Substring(0, 1).ToUpper().Equals(Constants.LetterDiscount)
+                || lastName.Substring(0, 1).ToUpper().Equals(Constants.LetterDiscount) ? discount : 0;
         }
 
         /// <summary>
         /// Cost of benefit per pay period
         /// </summary>
-        /// <param name="subtotal"></param>
+        /// <param name="value"></param>
         /// <param name="numberOfPayPeriods"></param>
         /// <returns>Decimal</returns>
-        public decimal CalculatePayPeriodValue(decimal subtotal, int numberOfPayPeriods)
+        public decimal CalculatePayPeriodValue(decimal value, int numberOfPayPeriods)
         {
             if (numberOfPayPeriods <= 0)
-                throw new ArgumentException("Number of pay periods should be greater than zero!");
+                throw new ArgumentException(message: "Number of pay periods should be greater than zero!");
 
-            return subtotal / numberOfPayPeriods;
+            return value / numberOfPayPeriods;
         }
 
         /// <summary>
@@ -61,14 +58,22 @@ namespace Deductions.Business
         public decimal CalculateSubTotal(decimal amount, decimal discount)
         {
             if (discount < 0)
-                throw new ArgumentException("Discount value cannot be negative!");
+                throw new ArgumentException(message: "Discount value cannot be negative!");
 
             if (amount <= 0)
-                throw new ArgumentException("Amount must be greater than zero!");
+                throw new ArgumentException(message: "Amount must be greater than zero!");
+
+            if(amount < discount)
+                throw new ArgumentException(message: "Amount must be greater than discount!");
 
             return amount - discount;
         }
 
-        
+        /// <summary>
+        /// Handle money rounding in a unified way
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>Decimal</returns>
+        public decimal Round(decimal value) => Math.Round(value, 2, MidpointRounding.AwayFromZero);
     }
 }

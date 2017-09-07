@@ -3,40 +3,46 @@
   <h3 class="modal-title">Paycheck for {{paycheckView.People[0].FirstName}} {{paycheckView.People[0].LastName}}</h3>
 </div>
 <div class="modal-body">
-  <table class="table table-striped table-bordered">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Benefit Cost</th>
-        <th>Discount</th>
-        <th>Subtotal</th>
-    </tr>
-    </thead>
-    <tr ng-repeat="p in paycheckView.People">
-      <td>{{p.PersonType}}</td>
-      <td>{{p.FirstName}} {{p.LastName}}</td>
-      <td>{{p.Deduction | currency:"$"}}</td>
-      <td>{{p.Discount | currency:"$"}}</td>
-      <td>{{p.SubTotal | currency:"$"}}</td>
-    </tr>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Benefit Cost</th>
+          <th>Discount</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="p in paycheckView.People">
+        <td>{{p.PersonType}}</td>
+        <td>{{p.FirstName}} {{p.LastName}}</td>
+        <td>{{p.Deduction | currency:"$"}}</td>
+        <td>{{p.Discount | currency:"$"}}</td>
+        <td>{{p.SubTotal | currency:"$"}}</td>
+      </tr>
+    </table>
+  </div>
   <table class="table table-striped table-bordered">
     <tr>
       <td>Benefit Cost</td>
-      <td>{{paycheckView.Deductions | currency:"$"}}</td>
+      <td class="right-align">{{paycheckView.Deductions | currency:"$"}}</td>
     </tr>
     <tr>
       <td>Discounts</td>
-      <td>{{paycheckView.Discounts | currency:"$"}}</td>
+      <td class="right-align bolder">{{paycheckView.Discounts | currency:"$"}}</td>
+    </tr>
+    <tr>
+      <td>Benefit Cost after Discounts</td>
+      <td class="right-align">{{paycheckView.Deductions - paycheckView.Discounts | currency:"$"}}</td>
     </tr>
     <tr>
       <td>Pay Period Salary</td>
-      <td>{{paycheckView.PayPeriodSalary | currency:"$"}}</td>
+      <td class="right-align">{{paycheckView.PayPeriodSalary | currency:"$"}}</td>
     </tr>
     <tr>
       <td>Paycheck Amount</td>
-      <td>{{paycheckView.PaycheckAmount | currency:"$"}}</td>
+      <td class="right-align bolder">{{paycheckView.PaycheckAmount | currency:"$"}}</td>
     </tr>
   </table>
 

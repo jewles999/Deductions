@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DeductionsAPI.Models.ViewModels
+﻿namespace DeductionsAPI.Models.ViewModels
 {
     public class SummaryViewModel
     {

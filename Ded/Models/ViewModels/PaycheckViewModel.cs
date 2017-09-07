@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace DeductionsAPI.Models.ViewModels
 {
@@ -25,12 +22,19 @@ namespace DeductionsAPI.Models.ViewModels
         public decimal PaycheckAmount { get; set; }
     }
 
-    public class PaycheckPerson
+    public class PaycheckQuery
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public decimal Salary { get; set; }
         public string DependentFirstName { get; set; }
-        public int RelationshipId { get; set; }
+    }
+
+    public class PaycheckPerson
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public decimal Salary { get; set; }
+        public string EmpType { get; set; }
     }
 }

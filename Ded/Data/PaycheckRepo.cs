@@ -1,24 +1,21 @@
-﻿using DeductionsAPI.Repo;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using DeductionsAPI.Repo;
 using DeductionsAPI.Models.ViewModels;
 using DeductionsAPI.Models;
 using Deductions.Business;
+using Ded.Settings;
+using System;
 
 namespace DeductionsAPI.Data
 {
     /// <summary>
-    /// Creates a detail paycheck view per employeeId
+    /// Creates a detailed paycheck view per employeeId
     /// </summary>
     public class PaycheckRepo : IPaycheckRepo
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly ILetterADiscount _paycheck;
-        private const string EmployeeType = "Employee";
-        private const string DependentType = "Dependent";
-
 
         public PaycheckRepo(ApplicationDbContext dbContext, ILetterADiscount paycheck)
         {
@@ -26,42 +23,70 @@ namespace DeductionsAPI.Data
             _paycheck = paycheck;
         }
 
-
+        /// <summary>
+        /// Gets Employee and Dependent data from the db
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
         public PaycheckViewModel CalculatePaycheck(int employeeId)
         {
-            var people = new List<PaycheckPeopleViewModel>();
-            var paycheckView = new PaycheckViewModel();
-
             var emp = (from e in _dbContext.Employees
                         join d in _dbContext.Dependents on e.EmployeeId equals d.EmployeeId
                         where e.EmployeeId == employeeId
-                        select new PaycheckPerson
+                        select new PaycheckQuery
                         {
                             FirstName = e.FirstName,
                             LastName = e.LastName,
                             Salary = e.Salary,
-                            DependentFirstName = d.FirstName,
-                            RelationshipId = d.Relationship_Id
+                            DependentFirstName = d.FirstName
                         }).ToList();
 
+            return BuildPaycheck(emp);
+        }
 
-            var employee = BuildEmployeeModel(emp[0]);
-            people.Add(employee);
+        /// <summary>
+        /// Iterates through the db result set and builds a paycheck view
+        /// </summary>
+        /// <param name="emp">List query result</param>
+        /// <returns></returns>
+        private PaycheckViewModel BuildPaycheck(List<PaycheckQuery> emp)
+        {
+            var people = new List<PaycheckPeopleViewModel>();
+            var paycheckView = new PaycheckViewModel();
 
-
-            foreach (var d in emp)
+            try
             {
-                var dependent = BuildDependentModel(d);
-                people.Add(dependent);
+                //if any exceptions occur, they will result from settings not being pulled from Deductions table correctly, or are missing
+                var person = new PaycheckPerson { FirstName = emp[0].FirstName, LastName = emp[0].LastName, Salary = emp[0].Salary, EmpType = Constants.EmployeeType };
+
+                var employee = BuildPaycheckModel(person);
+                people.Add(employee);
+
+
+                foreach (var d in emp)
+                {
+                    person = new PaycheckPerson { FirstName = d.DependentFirstName, LastName = d.LastName, Salary = 0, EmpType = Constants.DependentType };
+                    var dependent = BuildPaycheckModel(person);
+                    people.Add(dependent);
+                }
+
+                paycheckView = BuildPaycheckView(people, _paycheck.CalculatePayPeriodValue(emp[0].Salary, DeductionContstants.NumberOfPayPeriods));
+                paycheckView.People = people;
             }
-
-            paycheckView = BuildPaycheckView(people, emp[0].Salary / DeductionContstants.NumberOfPayPeriods);
-            paycheckView.People = people;
-
-
+            catch(Exception)
+            {
+                //LOG to the database or other means
+                throw;
+            }
             return paycheckView;
         }
 
+        /// <summary>
+        /// Builds summary money values of the paycheck
+        /// </summary>
+        /// <param name="people"></param>
+        /// <param name="paycheckAmount"></param>
+        /// <returns></returns>
         private PaycheckViewModel BuildPaycheckView(List<PaycheckPeopleViewModel> people, decimal paycheckAmount)
         {
             var paycheckView = new PaycheckViewModel();
@@ -72,46 +97,35 @@ namespace DeductionsAPI.Data
                 paycheckView.Discounts += p.Discount;
             }
 
-            paycheckView.PayPeriodSalary = paycheckAmount;
-            paycheckView.TotalDeductions = paycheckView.Deductions - paycheckView.Discounts;
-            paycheckView.PaycheckAmount = paycheckAmount - paycheckView.TotalDeductions;
+            paycheckView.PayPeriodSalary = _paycheck.Round(paycheckAmount);
+            paycheckView.TotalDeductions = _paycheck.Round(paycheckView.Deductions - paycheckView.Discounts);
+            paycheckView.PaycheckAmount = _paycheck.Round(paycheckAmount - paycheckView.TotalDeductions);
 
             return paycheckView;
         }
 
-        private PaycheckPeopleViewModel BuildEmployeeModel(PaycheckPerson emp)
+        /// <summary>
+        /// Builds line by line money values of the paycheck
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        private PaycheckPeopleViewModel BuildPaycheckModel(PaycheckPerson person)
         {
-            decimal discount = _paycheck.CalculateLetterADiscount(emp.FirstName, emp.LastName, DeductionContstants.Discount);
-            decimal discountAmount = _paycheck.CalculateDiscountedDeduction(DeductionContstants.EmployeeDeduction, discount);
+            var discount = _paycheck.Round(_paycheck.CalculateLetterADiscount(person.FirstName, person.LastName, DeductionContstants.Discount));
+            var benefitCost = person.EmpType == Constants.EmployeeType ? DeductionContstants.EmployeeDeduction : DeductionContstants.DependentDeduction;
+            var discountAmount = _paycheck.Round(_paycheck.CalculateDiscountedDeduction(benefitCost, discount));
 
-            var person = new PaycheckPeopleViewModel
+            var vm = new PaycheckPeopleViewModel
             {
-                PersonType = EmployeeType,
-                FirstName = emp.FirstName,
-                LastName = emp.LastName,
-                Deduction = _paycheck.CalculatePayPeriodValue(DeductionContstants.EmployeeDeduction, DeductionContstants.NumberOfPayPeriods),
-                Discount =  _paycheck.CalculatePayPeriodValue(discountAmount, DeductionContstants.NumberOfPayPeriods),
-                SubTotal = _paycheck.CalculatePayPeriodValue(_paycheck.CalculateSubTotal(DeductionContstants.EmployeeDeduction, discountAmount),
-                                                                    DeductionContstants.NumberOfPayPeriods)
+                PersonType = person.EmpType,
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                Deduction = _paycheck.Round(_paycheck.CalculatePayPeriodValue(benefitCost, DeductionContstants.NumberOfPayPeriods)),
+                Discount = _paycheck.Round(_paycheck.CalculatePayPeriodValue(discountAmount, DeductionContstants.NumberOfPayPeriods)),
+                SubTotal = _paycheck.Round(_paycheck.CalculatePayPeriodValue(_paycheck.CalculateSubTotal(benefitCost, discountAmount),
+                                                                    DeductionContstants.NumberOfPayPeriods))
             };
-            return person;
-        }
-
-        private PaycheckPeopleViewModel BuildDependentModel(PaycheckPerson dep)
-        {
-            decimal discount = _paycheck.CalculateLetterADiscount(dep.DependentFirstName, dep.LastName, DeductionContstants.Discount);
-            decimal discountAmount = _paycheck.CalculateDiscountedDeduction(DeductionContstants.DependentDeduction, discount);
-            var person = new PaycheckPeopleViewModel
-            {
-                PersonType = DependentType,
-                FirstName = dep.DependentFirstName,
-                LastName = dep.LastName,
-                Deduction = _paycheck.CalculatePayPeriodValue(DeductionContstants.DependentDeduction, DeductionContstants.NumberOfPayPeriods),
-                Discount = _paycheck.CalculatePayPeriodValue(discountAmount, DeductionContstants.NumberOfPayPeriods),
-                SubTotal = _paycheck.CalculatePayPeriodValue(_paycheck.CalculateSubTotal(DeductionContstants.DependentDeduction, discountAmount), 
-                                                                DeductionContstants.NumberOfPayPeriods)
-            };
-            return person;
+            return vm;
         }
     }
 }

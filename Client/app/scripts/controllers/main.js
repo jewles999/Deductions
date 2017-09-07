@@ -41,7 +41,6 @@
                 vm.relMessage = finishedRelMessage();
             })
                 .catch(function (err) {
-                    toastr.error("Could not connect to the database.");
                     vm.relMessage = finishedRelMessage();
                 });
         }
@@ -66,7 +65,6 @@
                 //post to db
                 employeeFactory.saveEmployee(vm.employee).then(function (res) {
                     //reloads list of employees
-                    console.log(res.data);
                     vm.employees = res.data;
 
                 })

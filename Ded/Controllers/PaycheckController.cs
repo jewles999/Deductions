@@ -17,7 +17,8 @@ namespace DeductionsAPI.Controllers
         {
             _repo = repo;
         }
-        public async Task<IHttpActionResult> Get(int id)
+
+        public async Task<IHttpActionResult> GetAsync(int id)
         {
             var paycheck = await Task.Run(() => _repo.CalculatePaycheck(id));
 

@@ -24,7 +24,7 @@ namespace DeductionsAPI.Controllers
         /// JSON of Employees and Count of Dependents:
         /// {FirstName, LastName, Salary, DependentCount}
         /// </returns>
-        public async Task<IHttpActionResult> Get()
+        public async Task<IHttpActionResult> GetAsync()
         {
             var emps = await Task.Run(() => _repo.GetEmployees());
 
@@ -42,11 +42,12 @@ namespace DeductionsAPI.Controllers
         /// Route: POST api/Employee
         /// Inserts new Employee and a list of Dependendents into the database
         /// </summary>
+        /// <param name="vm">EmployeeViewModel from json</param>
         /// <returns>
         /// JSON of Employees and Count of Dependents:
         /// {FirstName, LastName, Salary, DependentCount}
         /// </returns>
-        public async Task<IHttpActionResult> Post(EmployeeViewModel vm)
+        public async Task<IHttpActionResult> PostAsync(EmployeeViewModel vm)
         {
             var add = await Task.Run(() => _repo.AddEmployee(vm));
             if(add)

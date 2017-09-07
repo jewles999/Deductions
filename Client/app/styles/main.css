@@ -180,6 +180,12 @@ caption h4 {
   width: 20%;
   padding-right:10px;
 }
+.right-align {
+  text-align:right;
+}
+.bolder{
+  font-weight: 700;
+}
 .dep-header {
   position: absolute;
   bottom: 0;

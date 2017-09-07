@@ -23,7 +23,7 @@ namespace DeductionsAPI.Data
 
         public bool AddEmployee(EmployeeViewModel vm)
         {
-            Employee emp = new Employee{ FirstName = vm.FirstName, LastName = vm.LastName, Salary = vm.Salary };
+            var emp = new Employee{ FirstName = vm.FirstName, LastName = vm.LastName, Salary = vm.Salary };
             _dbContext.Employees.Add(emp);
 
             var dependents = new List<Dependent>();
