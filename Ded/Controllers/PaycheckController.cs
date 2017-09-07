@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using DeductionsAPI.Repo;
 
@@ -18,6 +13,11 @@ namespace DeductionsAPI.Controllers
             _repo = repo;
         }
 
+        /// <summary>
+        /// Gets paycheck view for the employee and dependents
+        /// </summary>
+        /// <param name="id">EmployeeId</param>
+        /// <returns>JSON</returns>
         public async Task<IHttpActionResult> GetAsync(int id)
         {
             var paycheck = await Task.Run(() => _repo.CalculatePaycheck(id));

@@ -38,7 +38,10 @@ namespace DeductionsAPI.Data
         }
 
 
-
+        /// <summary>
+        /// Summary view of employees and count of dependents
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<SummaryViewModel> GetEmployees()
         {
             var query = (IEnumerable<SummaryViewModel>)(

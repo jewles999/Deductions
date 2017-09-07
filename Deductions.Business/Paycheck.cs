@@ -6,7 +6,7 @@ namespace Deductions.Business
     /// <summary>
     /// Business logic for calculating paycheck entries
     /// </summary>
-    public class Paycheck : ILetterADiscount
+    public class Paycheck : IPaycheck
     {
         /// <summary>
         /// Benefit cost with discount applied

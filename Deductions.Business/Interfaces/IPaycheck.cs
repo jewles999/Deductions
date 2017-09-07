@@ -1,6 +1,6 @@
 ﻿namespace Deductions.Business
 {
-    public interface ILetterADiscount
+    public interface IPaycheck
     {
         decimal CalculateLetterADiscount(string firstName, string lastName, decimal discount);
         decimal CalculateDiscountedDeduction(decimal deduction, decimal discount);

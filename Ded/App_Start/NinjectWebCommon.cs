@@ -70,7 +70,7 @@ namespace DeductionsAPI.App_Start
             kernel.Bind<ApplicationDbContext>().To<ApplicationDbContext>().InRequestScope();
             kernel.Bind<IRelationshipRepo>().To<RelationshipRepo>().InRequestScope();
             kernel.Bind<IEnumerable>().To<EmployeeRepo>().InRequestScope();
-            kernel.Bind<ILetterADiscount>().To<Paycheck>().InRequestScope();
+            kernel.Bind<IPaycheck>().To<Paycheck>().InRequestScope();
             kernel.Bind<IPaycheckRepo>().To<PaycheckRepo>().InRequestScope();
         }        
     }

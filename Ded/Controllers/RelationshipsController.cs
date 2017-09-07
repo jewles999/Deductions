@@ -39,6 +39,5 @@ namespace DeductionsAPI.Controllers
                 return NotFound();
             }
         }
-       
     }
 }

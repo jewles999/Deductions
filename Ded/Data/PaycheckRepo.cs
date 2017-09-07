@@ -15,9 +15,9 @@ namespace DeductionsAPI.Data
     public class PaycheckRepo : IPaycheckRepo
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILetterADiscount _paycheck;
+        private readonly IPaycheck _paycheck;
 
-        public PaycheckRepo(ApplicationDbContext dbContext, ILetterADiscount paycheck)
+        public PaycheckRepo(ApplicationDbContext dbContext, IPaycheck paycheck)
         {
             _dbContext = dbContext;
             _paycheck = paycheck;
