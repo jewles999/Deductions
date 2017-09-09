@@ -62,6 +62,12 @@
                 //if user had not clicked plus button, add current form values to the array of dependents
                 vm.addDependent();
 
+                //check if number
+                if (isNaN(vm.employee.Salary)) {
+                    toastr.error("Salary should be greater than zero!");
+                    return;
+                }
+
                 //post to db
                 employeeFactory.saveEmployee(vm.employee).then(function (res) {
                     //reloads list of employees

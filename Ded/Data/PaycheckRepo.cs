@@ -31,16 +31,16 @@ namespace DeductionsAPI.Data
         public PaycheckViewModel CalculatePaycheck(int employeeId)
         {
             var emp = (from e in _dbContext.Employees
-                        join d in _dbContext.Dependents on e.EmployeeId equals d.EmployeeId
-                        where e.EmployeeId == employeeId
-                        select new PaycheckQuery
-                        {
-                            FirstName = e.FirstName,
-                            LastName = e.LastName,
-                            Salary = e.Salary,
-                            DependentFirstName = d.FirstName
-                        }).ToList();
-
+                       join d in _dbContext.Dependents on e.EmployeeId equals d.EmployeeId into subQ
+                       from deps in subQ.DefaultIfEmpty()
+                       where e.EmployeeId == employeeId
+                       select new PaycheckQuery
+                       {
+                           FirstName = e.FirstName,
+                           LastName = e.LastName,
+                           Salary = e.Salary,
+                           DependentFirstName = deps == null ? String.Empty : (deps.FirstName)
+                       }).ToList();
             return BuildPaycheck(emp);
         }
 
@@ -62,14 +62,15 @@ namespace DeductionsAPI.Data
                 var employee = BuildPaycheckModel(person);
                 people.Add(employee);
 
-
-                foreach (var d in emp)
+                if (emp.Count > 1)
                 {
-                    person = new PaycheckPerson { FirstName = d.DependentFirstName, LastName = d.LastName, Salary = 0, EmpType = Constants.DependentType };
-                    var dependent = BuildPaycheckModel(person);
-                    people.Add(dependent);
+                    foreach (var d in emp)
+                    {
+                        person = new PaycheckPerson { FirstName = d.DependentFirstName, LastName = d.LastName, Salary = 0, EmpType = Constants.DependentType };
+                        var dependent = BuildPaycheckModel(person);
+                        people.Add(dependent);
+                    }
                 }
-
                 paycheckView = BuildPaycheckView(people, _paycheck.CalculatePayPeriodValue(emp[0].Salary, DeductionContstants.NumberOfPayPeriods));
                 paycheckView.People = people;
             }
